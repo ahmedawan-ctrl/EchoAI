@@ -1,1 +1,6 @@
-// Flows will be imported for their side effects in this file.
+import { config } from 'dotenv';
+config();
+
+import '@/ai/flows/detect-ultrasound-anomalies.ts';
+import '@/ai/flows/answer-questions-about-ultrasound.ts';
+import '@/ai/flows/generate-preliminary-report.ts';
