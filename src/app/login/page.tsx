@@ -374,7 +374,7 @@ export default function EchoAILandingPage() {
               <Button size="lg" variant="secondary" className="text-lg px-8">
                 Start Free Trial
               </Button>
-              <Button size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary text-lg px-8">
+              <Button size="lg" variant="outline" className="border-primary-foreground text-primary bg-primary-foreground hover:bg-primary-foreground/90 hover:text-primary text-lg px-8">
                 Schedule Demo
               </Button>
             </div>
@@ -452,5 +452,3 @@ export default function EchoAILandingPage() {
     </div>
   );
 }
-
-    
