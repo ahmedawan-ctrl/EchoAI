@@ -1,7 +1,9 @@
+
 'use client';
 
-import { useState, useRef, useCallback, ChangeEvent, FormEvent } from 'react';
+import { useState, useRef, useCallback, ChangeEvent, FormEvent, useEffect } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import {
   Bot,
   FileScan,
@@ -45,6 +47,16 @@ export default function Home() {
   });
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  // Redirect to login if not "logged in" (i.e. no image uploaded yet)
+  // In a real app, this would be a proper auth check.
+  useEffect(() => {
+    if (!originalImage) {
+      router.push('/login');
+    }
+  }, [originalImage, router]);
+
 
   const resetState = () => {
     setOriginalImage(null);
@@ -180,6 +192,15 @@ export default function Home() {
     </Card>
   );
 
+  if (!originalImage) {
+    // Show a loading/redirecting state while useEffect kicks in
+    return (
+      <div className="min-h-screen w-full bg-background flex items-center justify-center">
+        <Loader2 className="h-16 w-16 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen w-full bg-background font-body">
       <header className="flex items-center justify-between p-4 border-b">
@@ -187,32 +208,24 @@ export default function Home() {
           <EchoAIIcon className="h-8 w-8 text-primary" />
           <h1 className="text-2xl font-bold font-headline text-primary">EchoAI</h1>
         </div>
-        {originalImage && (
-          <Button variant="destructive" onClick={resetState}>
+        <div>
+          <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
+            <Upload className="mr-2 h-4 w-4" /> New Scan
+          </Button>
+          <Input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleImageUpload}
+          />
+           <Button variant="destructive" onClick={resetState} className="ml-2">
             <X className="mr-2 h-4 w-4" /> Reset
           </Button>
-        )}
+        </div>
       </header>
 
       <main className="p-4 md:p-8">
-        {!originalImage ? (
-          <div className="text-center max-w-2xl mx-auto mt-20">
-            <h2 className="text-4xl font-bold font-headline mb-4">AI-Powered Ultrasound Analysis</h2>
-            <p className="text-muted-foreground text-lg mb-8">
-              Upload an ultrasound image to detect anomalies, generate a preliminary report, and get answers to your questions instantly.
-            </p>
-            <Button size="lg" onClick={() => fileInputRef.current?.click()}>
-              <Upload className="mr-2 h-5 w-5" /> Upload Image
-            </Button>
-            <Input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleImageUpload}
-            />
-          </div>
-        ) : (
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             <div className="lg:col-span-3 flex flex-col gap-8">
               <div className="grid md:grid-cols-2 gap-8">
@@ -326,8 +339,9 @@ export default function Home() {
               </Card>
             </div>
           </div>
-        )}
       </main>
     </div>
   );
 }
+
+    
