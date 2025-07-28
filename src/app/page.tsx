@@ -13,6 +13,7 @@ import {
   Upload,
   User,
   X,
+  LogIn,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -48,15 +49,6 @@ export default function Home() {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-
-  // Redirect to login if not "logged in" (i.e. no image uploaded yet)
-  // In a real app, this would be a proper auth check.
-  useEffect(() => {
-    if (!originalImage) {
-      router.push('/login');
-    }
-  }, [originalImage, router]);
-
 
   const resetState = () => {
     setOriginalImage(null);
@@ -193,10 +185,33 @@ export default function Home() {
   );
 
   if (!originalImage) {
-    // Show a loading/redirecting state while useEffect kicks in
     return (
-      <div className="min-h-screen w-full bg-background flex items-center justify-center">
-        <Loader2 className="h-16 w-16 animate-spin text-primary" />
+      <div className="min-h-screen w-full bg-background flex flex-col items-center justify-center gap-8 p-4">
+        <div className="flex items-center gap-4 text-primary">
+           <EchoAIIcon className="h-12 w-12" />
+           <h1 className="text-4xl font-bold font-headline">EchoAI</h1>
+        </div>
+        <Card className="w-full max-w-md text-center">
+            <CardHeader>
+                <CardTitle className="font-headline text-2xl">Welcome</CardTitle>
+                <CardDescription>Upload an ultrasound scan to begin analysis.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Button size="lg" onClick={() => fileInputRef.current?.click()}>
+                    <Upload className="mr-2 h-5 w-5" /> Upload Image
+                </Button>
+                <Input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageUpload}
+                />
+            </CardContent>
+        </Card>
+        <Button variant="link" onClick={() => router.push('/login')}>
+            <LogIn className="mr-2 h-4 w-4" /> Go to Landing Page
+        </Button>
       </div>
     );
   }
@@ -343,5 +358,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

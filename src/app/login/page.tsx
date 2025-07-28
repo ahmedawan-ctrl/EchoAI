@@ -49,6 +49,7 @@ export default function EchoAILandingPage() {
       icon: Upload,
       title: 'Upload Study',
       desc: 'Securely upload DICOM or native ultrasound clips in under 30 seconds.',
+      href: '/',
     },
     {
       icon: Zap,
@@ -258,17 +259,25 @@ export default function EchoAILandingPage() {
             </div>
 
             <div className="grid md:grid-cols-4 gap-8">
-              {howItWorks.map((step, idx) => (
-                <div key={idx} className="flex flex-col items-center text-center">
-                  <div className="flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 text-primary">
-                    <step.icon className="w-10 h-10" />
+              {howItWorks.map((step, idx) => {
+                const content = (
+                  <div key={idx} className="flex flex-col items-center text-center group">
+                    <div className="flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                      <step.icon className="w-10 h-10" />
+                    </div>
+                    <h3 className="mt-4 text-xl font-semibold text-foreground font-headline">
+                      {step.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-muted-foreground">{step.desc}</p>
                   </div>
-                  <h3 className="mt-4 text-xl font-semibold text-foreground font-headline">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{step.desc}</p>
-                </div>
-              ))}
+                );
+                
+                if (step.href) {
+                  return <Link href={step.href} key={idx} className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-lg">{content}</Link>
+                }
+                
+                return content;
+              })}
             </div>
           </div>
         </section>
