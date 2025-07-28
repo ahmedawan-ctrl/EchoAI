@@ -47,8 +47,8 @@ const prompt = ai.definePrompt({
 
   Based on the original ultrasound image, the AI-annotated image, and the detected anomalies, generate a concise and informative preliminary report.
 
-  Original Image: {{media url=originalImageDataUri}}
-  Annotated Image: {{media url=annotatedImageDataUri}}
+  Original Image: {{media url={{{originalImageDataUri}}}}}
+  Annotated Image: {{media url={{{annotatedImageDataUri}}}}}
   Detected Anomalies: {{#each detectedAnomalies}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 
   Report:`,
