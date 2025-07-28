@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview Detects and highlights potential abnormalities in an ultrasound image.
@@ -44,10 +45,10 @@ const prompt = ai.definePrompt({
   prompt: `You are an AI expert in analyzing ultrasound images for anomalies.
 
   Analyze the provided ultrasound image for any potential abnormalities.
-  1.  Create a list of the anomalies you detect. If you do not find any, provide an empty list.
+  1.  Create a list of the anomalies you detect. If you do not find any, provide an empty list for the "anomalies" field.
   2.  Provide an annotated version of the image highlighting these anomalies.
 
-  Return your response in JSON format with two keys: "anomalies" (a list of strings) and "annotatedImage" (a data URI string).
+  Return your response in JSON format with two keys: "anomalies" (a list of strings, which must be an empty list if no anomalies are found) and "annotatedImage" (a data URI string).
 
   Ultrasound Image: {{media url=photoDataUri}}
   `,config: {
