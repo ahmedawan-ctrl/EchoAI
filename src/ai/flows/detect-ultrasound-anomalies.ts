@@ -22,7 +22,7 @@ export type DetectUltrasoundAnomaliesInput = z.infer<typeof DetectUltrasoundAnom
 const DetectUltrasoundAnomaliesOutputSchema = z.object({
   anomalies: z
     .array(z.string())
-    .describe('A list of potential anomalies detected in the ultrasound image.'),
+    .describe('A list of potential anomalies detected in the ultrasound image. If no anomalies are found, return an empty array.'),
   annotatedImage: z
     .string()
     .describe(
@@ -43,7 +43,11 @@ const prompt = ai.definePrompt({
   output: {schema: DetectUltrasoundAnomaliesOutputSchema},
   prompt: `You are an AI expert in analyzing ultrasound images for anomalies.
 
-  Analyze the provided ultrasound image for any potential abnormalities. List the anomalies detected and provide an annotated version of the image highlighting these anomalies. Ensure the annotated image is returned as a data URI.
+  Analyze the provided ultrasound image for any potential abnormalities.
+  1.  Create a list of the anomalies you detect. If you do not find any, provide an empty list.
+  2.  Provide an annotated version of the image highlighting these anomalies.
+
+  Return your response in JSON format with two keys: "anomalies" (a list of strings) and "annotatedImage" (a data URI string).
 
   Ultrasound Image: {{media url=photoDataUri}}
   `,config: {
