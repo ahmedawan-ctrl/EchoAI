@@ -45,13 +45,16 @@ const prompt = ai.definePrompt({
   prompt: `You are an AI expert in analyzing ultrasound images for anomalies.
 
   Analyze the provided ultrasound image for any potential abnormalities.
-  1.  Create a list of the anomalies you detect. If you do not find any, provide an empty list for the "anomalies" field.
+  1.  Create a list of the anomalies you detect.
   2.  Provide an annotated version of the image highlighting these anomalies.
 
-  Return your response in JSON format with two keys: "anomalies" (a list of strings, which must be an empty list if no anomalies are found) and "annotatedImage" (a data URI string).
+  Return your response in JSON format with two keys: "anomalies" and "annotatedImage".
+  The "anomalies" key must be a list of strings. If you do not find any anomalies, you MUST provide an empty list, like this: "anomalies": [].
+  The "annotatedImage" key must be a data URI string.
 
   Ultrasound Image: {{media url=photoDataUri}}
-  `,config: {
+  `,
+  config: {
     safetySettings: [
       {
         category: 'HARM_CATEGORY_HATE_SPEECH',
