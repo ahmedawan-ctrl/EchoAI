@@ -42,17 +42,12 @@ const prompt = ai.definePrompt({
   name: 'detectUltrasoundAnomaliesPrompt',
   input: {schema: DetectUltrasoundAnomaliesInputSchema},
   output: {schema: DetectUltrasoundAnomaliesOutputSchema},
-  prompt: `You are an AI expert in analyzing ultrasound images for anomalies.
+  prompt: `You are an AI expert in analyzing ultrasound images for anomalies. Your task is to analyze the provided ultrasound image and identify any potential abnormalities. You MUST return a JSON object with two properties: "anomalies" and "annotatedImage".
 
-  Analyze the provided ultrasound image for any potential abnormalities.
-  1.  Create a list of the anomalies you detect.
-  2.  Provide an annotated version of the image highlighting these anomalies.
+1.  **anomalies**: This MUST be an array of strings. Each string should describe a detected anomaly. If no anomalies are found, you MUST return an empty array, like this: \`"anomalies": []\`. **This field is mandatory and must always be present in your response.**
+2.  **annotatedImage**: This MUST be a data URI string of the image with the detected anomalies highlighted.
 
-  Return your response in JSON format with two keys: "anomalies" and "annotatedImage".
-  The "anomalies" key must be a list of strings. If you do not find any anomalies, you MUST provide an empty list, like this: "anomalies": [].
-  The "annotatedImage" key must be a data URI string.
-
-  Ultrasound Image: {{media url=photoDataUri}}
+Ultrasound Image: {{media url=photoDataUri}}
   `,
   config: {
     safetySettings: [
